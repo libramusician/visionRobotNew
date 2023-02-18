@@ -24,8 +24,8 @@ class UDPsource():
         while True:
             # grab frame from camera
             frame = self.receiver.receive()
-            frame2 = cv2.resize(frame, (320, 240))
-            ok, frame_bytes = cv2.imencode(".jpg", frame2)
+            # frame2 = cv2.resize(frame, (320, 240))
+            ok, frame_bytes = cv2.imencode(".jpg", frame)
             print(len(frame_bytes))
             try:
                 self.s.sendto(frame_bytes, addr)

@@ -45,7 +45,7 @@ async def process_frames(ip):
         frame = receiver.receive()
         if frame is None:
             continue
-        detected, result = detector.detect(frame)
+        detected, result, depth = detector.detect(frame)
         final_cmd = "0"
         # user sent a command, change final command and clear set command
         if global_variable.command != final_cmd:
@@ -55,6 +55,12 @@ async def process_frames(ip):
         else:
             if detected:
                 final_cmd = Analyzer.analysis(result, frame)
+                # if object in the middle, do forward or backward
+                if final_cmd == "0":
+                    if depth > 30:
+                        final_cmd = "1"
+                    elif depth < 20:
+                        final_cmd = "2"
 
         # send final command back to robot
         print(final_cmd)

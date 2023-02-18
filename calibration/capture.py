@@ -1,20 +1,25 @@
 import cv2
+from receiver.UDPReceiver import UDPReceiver
+from util.UDPSender import UDPSender
 
-# Initialize the webcam
-cap = cv2.VideoCapture(0)
+ip = "127.0.0.1"
+ctr_addr = (ip, 8002)
+frame_addr = (ip, 6000)
 
-# Check if the webcam is opened correctly
-if not cap.isOpened():
-    raise IOError("Cannot open webcam")
+receiver = UDPReceiver()
+sender = UDPSender(ctr_addr)
 
-# Set the image size
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+# for UDP only
+receiver.connect(frame_addr)
+
 counter = 1
 
 while True:
     # Capture frame-by-frame
-    ret, frame = cap.read()
+    frame = receiver.receive()
+    if frame is None:
+        continue
+    sender.send("0")
 
     # Display the resulting frame
     cv2.imshow('Webcam', frame)
@@ -31,5 +36,4 @@ while True:
         break
 
 # Release the webcam and close the window
-cap.release()
 cv2.destroyAllWindows()

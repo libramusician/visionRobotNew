@@ -2,6 +2,7 @@ import socket
 
 import cv2
 import numpy
+import global_variable
 
 
 class UDPReceiver:
@@ -18,7 +19,8 @@ class UDPReceiver:
             # data, address = self.s.recvfrom(1048576)
 
             frame_arr = numpy.array(bytearray(data))
-            self.current_frame = cv2.resize(cv2.imdecode(frame_arr, cv2.IMREAD_UNCHANGED), (416, 416))
+            self.current_frame = cv2.resize(cv2.imdecode(frame_arr, cv2.IMREAD_UNCHANGED),
+                                            (global_variable.WIDTH, global_variable.HEIGHT))
             return self.current_frame
         except Exception as e:
             print(e)
