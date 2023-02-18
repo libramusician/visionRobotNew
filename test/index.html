@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WebSocker Client</title>
+
+    </head>
+
+    <body>
+
+    <img id="asd"/>
+
+
+
+        <script>
+            const socket = new WebSocket('ws://localhost:50000');
+
+            socket.addEventListener('open', function (event) {
+
+                socket.send('Connection Established');
+
+            });
+
+
+
+            socket.addEventListener('message', async function (event) {
+                msg = await event.data.text();
+                console.log(msg);
+                const imageEl = document.getElementById("asd");
+                imageEl.src = `data:image/jpeg;base64, ${msg}`
+            });
+
+            const contactServer = () => {
+
+                socket.send("Initialize");
+
+            }
+
+
+            document.addEventListener('keydown', function(event) {
+              // Check which key was pressed
+              if (event.code === 'KeyA') {
+                socket.send('The A key was pressed');
+              } else if (event.code === 'KeyB') {
+                socket.send('The B key was pressed');
+              } else {
+                socket.send('Another key was pressed');
+              }
+            });
+
+        </script>
+    </body>
+
+</html>
