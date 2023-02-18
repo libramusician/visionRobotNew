@@ -30,8 +30,6 @@ async def handle_client(websocket, path):
     except websockets.ConnectionClosed:
         print("connection closed")
         observers.remove(new_client)
-    # finally:
-    #     send_task.cancel()
 
 
 async def process_frames(ip):
@@ -65,13 +63,14 @@ async def process_frames(ip):
         # send frame to user
         ok, frame_bytes = cv2.imencode(".jpg", frame)
         frame_str = base64.b64encode(frame_bytes.tobytes())
-        print(frame_str)
+
+        # print(frame_str)
         obs: client.Client
         for obs in observers:
             await obs.response(frame_str)
 
         # give some time for send buffer to flush
-        await asyncio.sleep(0.03)
+        await asyncio.sleep(0.01)
 
         cv2.imshow("frame", frame)
         if cv2.waitKey(1) == ord('q'):

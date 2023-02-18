@@ -24,14 +24,18 @@ class UDPsource():
         while True:
             # grab frame from camera
             frame = self.receiver.receive()
-            frame2 = cv2.resize(frame, (160, 90))
+            frame2 = cv2.resize(frame, (320, 240))
             ok, frame_bytes = cv2.imencode(".jpg", frame2)
             print(len(frame_bytes))
-            self.s.sendto(frame_bytes, addr)
-            print("msg sent to " + str(addr))
-            response, _ = self.s2.recvfrom(4)
-            print("msg recv")
-            print(response)
+            try:
+                self.s.sendto(frame_bytes, addr)
+
+                print("msg sent to " + str(addr))
+                response, _ = self.s2.recvfrom(4)
+                print("msg recv")
+                print(response)
+            except Exception as error:
+                print(error)
 
     def clean_up(self):
         self.s.close()
