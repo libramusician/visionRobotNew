@@ -72,11 +72,6 @@ async def process_frames(ip):
         # give some time for send buffer to flush
         await asyncio.sleep(0.01)
 
-        cv2.imshow("frame", frame)
-        if cv2.waitKey(1) == ord('q'):
-            break
-    cv2.destroyAllWindows()
-
 
 async def main(ip):
     asyncio.create_task(process_frames(ip))

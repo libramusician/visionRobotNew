@@ -23,7 +23,7 @@ def detect(frame):
     :param frame: the raw frame
     :return: the bounding box in form of x, y, w, h
     """
-    marker_corners, _, _ = cv2.aruco.detectMarkers(frame, dictionary)
+    marker_corners, _, _ = cv2.aruco.ArucoDetector.detectMarkers(frame, dictionary)
     if len(marker_corners) > 0:
         x1 = int(marker_corners[0][0][0][0])
         y1 = int(marker_corners[0][0][0][1])
