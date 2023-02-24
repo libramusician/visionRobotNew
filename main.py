@@ -33,8 +33,8 @@ async def handle_client(websocket, path):
 
 
 async def process_frames(ip):
-    ctr_addr = (ip, 8002)
-    frame_addr = (ip, 6000)
+    ctr_addr = (ip, global_variable.CTR_PORT)
+    frame_addr = (ip, global_variable.FRAME_PORT)
     # cam = CameraReceiver()
     receiver = UDPReceiver()
     sender = UDPSender(ctr_addr)
@@ -57,10 +57,10 @@ async def process_frames(ip):
                 final_cmd = Analyzer.analysis(result, frame)
                 # if object in the middle, do forward or backward
                 if final_cmd == "0":
-                    if depth > 30:
+                    if depth > 60:
                         final_cmd = "1"
-                    elif depth < 20:
-                        final_cmd = "2"
+                    elif depth < 50:
+                        final_cmd = "3"
 
         # send final command back to robot
         print(final_cmd)
@@ -75,8 +75,8 @@ async def process_frames(ip):
         for obs in observers:
             await obs.response(frame_str)
 
-        # give some time for send buffer to flush
-        await asyncio.sleep(0.01)
+        # yield to the event loop and give chance for other task to run
+        await asyncio.sleep(0)
 
 
 async def main(ip):
@@ -92,7 +92,7 @@ async def main(ip):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-ip", default="127.0.0.1")
+    parser.add_argument("-ip", default="192.168.137.125")
     args = parser.parse_args()
 
     asyncio.run(main(args.ip))

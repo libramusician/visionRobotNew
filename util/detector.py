@@ -12,7 +12,7 @@ rvecs = data['rvecs']
 tvecs = data['tvecs']
 
 # need measure, in cm
-MARKER_SIZE = 3
+MARKER_SIZE = 16
 
 import util.fps as fps
 

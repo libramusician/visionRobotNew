@@ -8,7 +8,7 @@ from receiver.CameraReceiver import CameraReceiver
 class UDPsource():
     def __init__(self, camera: CameraReceiver):
         self.receiver = camera
-        self.ip = "127.0.0.1"
+        self.ip = "0.0.0.0"
         self.send_port = 6000
         self.receive_port = 8002
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

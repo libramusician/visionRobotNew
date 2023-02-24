@@ -22,9 +22,10 @@ class UDPReceiver:
             self.current_frame = cv2.resize(cv2.imdecode(frame_arr, cv2.IMREAD_UNCHANGED),
                                             (global_variable.WIDTH, global_variable.HEIGHT))
             return self.current_frame
+        except cv2.error:
+            pass
         except Exception as e:
             print(e)
-            print("connection stopped")
             exit(1)
 
     def connect(self, addr):
